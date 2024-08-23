@@ -5,7 +5,7 @@ import { getDirname, path } from "@vuepress/utils";
 import { glob } from "glob";
 
 let songFiles = glob
-  .sync("docs/songs/**/*.md")
+  .sync("docs/posts/**/*.md")
   .map((f) => f.replace("docs", "").replace("index.md", ""));
 
 import { description } from "../../package.json";
@@ -18,6 +18,13 @@ export default defineUserConfig({
   // If page has title (in frontmatter) or h1 then: <page title/h1> | <global title>
   // e.g <title>Vuepress-DecapCMS-Netlify | VueDN</title>
   title: "VueDN",
+  themeConfig: {
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: 'About', link: '/about/' },
+      { text: 'Blog', link: '/blog/' },
+    ],
+  },
   // Global description in in HTML <head>.
   // If page has description (in frontmatter) then: <global description is replaced by <page description>
   // <meta name="description" content="...">
@@ -37,9 +44,9 @@ export default defineUserConfig({
     notFound: ["There's nothing here. If you're looking for DecapCMS, manually enter `/admin` to the root site path to navigate directly to it."],
     navbar: [
       {
-        text: "Songs",
+        text: "Posts",
         // notice the trailing / (for the automatic next and prev links based on the sidebar)
-        link: "/songs/",
+        link: "/posts/",
       },
       {
         text: "Using this template",
@@ -53,10 +60,10 @@ export default defineUserConfig({
     // notice there's a difference between /songs and /songs/
     // We have the /songs to enable this sidebar for /songs and /songs/ paths
     sidebar: {
-      "/songs": [
+      "/posts": [
         {
-          text: "Songs",
-          children: songFiles,
+          text: "Posts",
+          children: postFiles,
         },
       ],
     },

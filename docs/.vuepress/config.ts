@@ -4,89 +4,78 @@ import { searchPlugin } from "@vuepress/plugin-search";
 import { getDirname, path } from "@vuepress/utils";
 import { glob } from "glob";
 
-let songFiles = glob
-  .sync("docs/posts/**/*.md")
-  .map((f) => f.replace("docs", "").replace("index.md", ""));
+module.exports = {
+  title: 'My VuePress Blog',  // Tiêu đề trang web
+  description: 'A simple blog built with VuePress',  // Mô tả trang web
+  base: '/',  // Đường dẫn gốc của trang web (thường để mặc định)
 
-import { description } from "../../package.json";
-
-const __dirname = getDirname(import.meta.url);
-
-export default defineUserConfig({
-  lang: "en-US",
-  // Global title in HTML <head>.
-  // If page has title (in frontmatter) or h1 then: <page title/h1> | <global title>
-  // e.g <title>Vuepress-DecapCMS-Netlify | VueDN</title>
-  title: "VueDN",
   themeConfig: {
+    logo: '/images/logo.png',  // Đường dẫn tới logo (nếu có)
+    navbar: true,  // Bật/tắt thanh điều hướng
+
+    // Điều hướng chính (Navigation bar)
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'About', link: '/about/' },
       { text: 'Blog', link: '/blog/' },
-    ],
-  },
-  // Global description in in HTML <head>.
-  // If page has description (in frontmatter) then: <global description is replaced by <page description>
-  // <meta name="description" content="...">
-  description: description,
-  head: [
-    [
-      "script",
+      { text: 'About', link: '/about/' },  // Trang giới thiệu
       {
-        src: "https://identity.netlify.com/v1/netlify-identity-widget.js",
-      },
+        text: 'Links',
+        items: [
+          { text: 'GitHub', link: 'https://github.com/username' },
+          { text: 'Netlify', link: 'https://www.netlify.com/' }
+        ]
+      }
     ],
-  ],
 
-  // theme and its config
-  theme: defaultTheme({
-    logo: "vue.png",
-    notFound: ["There's nothing here. If you're looking for DecapCMS, manually enter `/admin` to the root site path to navigate directly to it."],
-    navbar: [
-      {
-        text: "Posts",
-        // notice the trailing / (for the automatic next and prev links based on the sidebar)
-        link: "/posts/",
-      },
-      {
-        text: "Using this template",
-        link: "/template/",
-      },
-      {
-        text: "GitHub",
-        link: "https://github.com/NdagiStanley/VueDN",
-      },
-    ],
-    // notice there's a difference between /songs and /songs/
-    // We have the /songs to enable this sidebar for /songs and /songs/ paths
+    // Sidebar (Thanh bên trái)
     sidebar: {
-      "/posts": [
+      '/blog/': [
         {
-          text: "Posts",
-          children: postFiles,
-        },
+          title: 'Blog Posts',
+          collapsable: false,
+          children: [
+            '',  // Tương ứng với README.md trong thư mục blog
+            'first-post',
+            'second-post'
+          ]
+        }
       ],
+      // Sidebar cho các trang khác (như About)
+      '/about/': [
+        {
+          title: 'About',
+          collapsable: false,
+          children: [
+            ''
+          ]
+        }
+      ]
     },
-  }),
 
-  // Replace footer
-  alias: {
-    "@theme/HomeFooter.vue": path.resolve(
-      __dirname,
-      "./components/MyHomeFooter.vue"
-    ),
+    // Tính năng bổ sung
+    searchPlaceholder: 'Search...',  // Placeholder của ô tìm kiếm
+    lastUpdated: 'Last Updated',  // Hiển thị thời gian cập nhật cuối cùng của bài viết
+    smoothScroll: true,  // Bật cuộn mượt
+
+    // Tích hợp Google Analytics (nếu cần)
+    googleAnalytics: {
+      id: 'UA-XXXXXX-X'
+    }
   },
 
-  // plugin
+  // Cấu hình các plugin (nếu có)
   plugins: [
-    registerComponentsPlugin({
-      // options
-      // Absolute path to the components directory
-      componentsDir: path.resolve(__dirname, "./components"),
-    }),
-    searchPlugin({
-      // options
-      // Default shortcut is key '/'
-    }),
+    '@vuepress/back-to-top',  // Plugin "Back to Top"
+    '@vuepress/medium-zoom',  // Plugin phóng to hình ảnh
+    '@vuepress/nprogress'     // Plugin hiển thị thanh tiến trình khi tải trang
   ],
-});
+
+  // Cấu hình Markdown
+  markdown: {
+    lineNumbers: true,  // Hiển thị số dòng trong các block code
+  },
+
+  // Cấu hình thư mục và build
+  dest: 'dist',  // Thư mục build khi chạy `npm run build`
+  extraWatchFiles: ['.vuepress/config.js']  // Tự động tải lại khi config.js thay đổi
+};

@@ -1,14 +1,17 @@
 ---
 home: true
-title: Vuepress-Decap-Netlify
-tagline: A Vuepress boilerplate integrated with Decap CMS hosted on Netlify
-heroText: Vuepress-Decap-Netlify
-heroImage: hero.png
-actions:
-  - text: Set up this template
-    link: /template
-    type: primary
----
+heroText: Welcome to My Blog
+tagline: Built with VuePress
+actionText: Get Started →
+actionLink: /blog/
+features:
+- title: Simple
+  details: Minimal setup with markdown-centered project structure.
+- title: Powerful
+  details: Enjoy the power of Vue, use Vue components in markdown, and develop custom themes with Vue.
+- title: Flexible
+  details: Enhance your site with plugins, theming, and more.
+footer: © 2024 My VuePress Blog
 
 <div class="center">
 <div class="spaced">
